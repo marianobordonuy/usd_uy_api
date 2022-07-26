@@ -1,0 +1,30 @@
+{
+  "dependencies": {
+    "axios": "^0.27.2",
+    "cheerio": "^1.0.0-rc.12",
+    "console": "^0.7.2",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "init": "^0.1.2",
+    "mongoose": "^6.4.1",
+    "node": "^18.5.0",
+    "node-cron": "^3.0.1",
+    "nodemon": "^2.0.18",
+    "uuid": "^8.3.2"
+  },
+  "name": "api-usd-uy",
+  "version": "1.0.0",
+  "description": "API - Exchanges in UY",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "*.json",
+      "*.txt"
+    ]
+  },
+  "author": "ICanRead",
+  "license": "ISC"
+}
