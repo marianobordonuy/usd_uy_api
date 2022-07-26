@@ -28,6 +28,8 @@ const Velso = require('./scrapers/velso');
 const rateSchema = require("./models/rate");
 require('dotenv').config();
 
+const uri = process.env.MONGODB_URI;
+
 const index = express()
 
 index.use(express.urlencoded({extended: true}));
@@ -40,7 +42,8 @@ const myLogger = new Console({
 
 try {
     mongoose.connect(
-        "mongodb+srv://" + process.env.DB_USERNAME + ":" + process.env.SECRET_KEY + "@" + process.env.DB_NAME + ".wbidg.mongodb.net/" + process.env.DB_COLLECTION +"?retryWrites=true&w=majority",
+        uri,
+        //"mongodb+srv://" + process.env.DB_USERNAME + ":" + process.env.SECRET_KEY + "@" + process.env.DB_NAME + ".wbidg.mongodb.net/" + process.env.DB_COLLECTION +"?retryWrites=true&w=majority",
         {
             useNewUrlParser: true,
             useUnifiedTopology: true
@@ -72,7 +75,7 @@ index.get('/api/:sourceId/:currencyId', async (req, res) => {
             res.write(data);
             res.end();
         } else {
-            myLogger.log(Date() + " " + err);
+            myLogger.error(Date() + " " + err);
         }
     });
 })
@@ -90,7 +93,7 @@ index.get('/logs/:logtype', async (req, res) => {
             res.write(data);
             res.end();
         } else {
-            myLogger.log(Date() + " " + err);
+            myLogger.error(Date() + " " + err);
         }
     });
 })
@@ -106,7 +109,7 @@ index.post('/save/:sourceId/:currencyId', async (req, res) => {
             res.status(200).send();
             myLogger.log(Date() + " JSON file successfully created in FS for " + source + currency);
         } else {
-            myLogger.log(Date() + " " + err);
+            myLogger.error(Date() + " " + err);
         }
     });
     //Save data in MongoDB
@@ -115,7 +118,7 @@ index.post('/save/:sourceId/:currencyId', async (req, res) => {
         if (!err) {
             myLogger.log(Date() + " JSON file successfully stored in Mongo for " + source + currency);
         } else {
-            myLogger.log(Date() + " " + err);
+            myLogger.error(Date() + " " + err);
         }
     });
 })
