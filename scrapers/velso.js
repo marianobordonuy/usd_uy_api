@@ -2,7 +2,7 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const fs = require('fs');
 const path = require('path');
-const rateSchema = require("../models/rate");
+//const rateSchema = require("../models/rate");
 const {Console} = require("console");
 
 let velsoUSD = {};
@@ -114,6 +114,7 @@ const velsoQuotes = async() => {
             myLogger.log(Date() + " JSON file successfully created for velsoEUR on FS");
         }
     });
+    /*
     //Save data into MongoDB
     let velsoDocUSD = new rateSchema(velsoUSD);
     velsoDocUSD.save(function(err) {
@@ -147,6 +148,7 @@ const velsoQuotes = async() => {
             myLogger.log(Date() + " Document velsoDocEUR inserted successfully on MongoDB!");
         }
     });
+    */
     velsoUSD = {};
     velsoARS = {};
     velsoBRL = {};

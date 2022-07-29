@@ -1,21 +1,22 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
+//const axios = require('axios');
+//const cheerio = require('cheerio');
 const fs = require('fs');
-const path = require('path');
-const rateSchema = require("../models/rate");
+//const path = require('path');
+//const rateSchema = require("../models/rate");
 const {Console} = require("console");
 
-let avenidaUSD = {};
-let avenidaARS = {};
-let avenidaBRL = {};
-let avenidaEUR = {};
-const avenidaUrl = 'https://www.avenida.com.uy/';
+//let avenidaUSD = {};
+//let avenidaARS = {};
+//let avenidaBRL = {};
+//let avenidaEUR = {};
+//const avenidaUrl = 'https://www.avenida.com.uy/';
 
 const myLogger = new Console({
     stdout: fs.createWriteStream("./_logs/normalStdout.txt"),
     stderr: fs.createWriteStream("./_logs/errStdErr.txt"),
 });
 
+/*
 const avenidaQuotes = async() => {
     const {data} = await axios.get(avenidaUrl);
     const $ = cheerio.load(data);
@@ -142,5 +143,6 @@ const avenidaQuotes = async() => {
     avenidaBRL = {};
     avenidaEUR = {};
 }
+*/
 
-module.exports = {avenidaQuotes};
+//module.exports = {avenidaQuotes};

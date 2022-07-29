@@ -1,21 +1,22 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
+//const axios = require('axios');
+//const cheerio = require('cheerio');
 const fs = require('fs');
-const path = require('path');
-const rateSchema = require("../models/rate");
+//const path = require('path');
+//const rateSchema = require("../models/rate");
 const {Console} = require("console");
 
-let eurodracmaUSD = {};
+//let eurodracmaUSD = {};
 //let minasARS = {};
 //let minasBRL = {};
 //let minasEUR = {};
-const eurodracmaUrl = 'https://eurodracma.com/';
+//const eurodracmaUrl = 'https://eurodracma.com/';
 
 const myLogger = new Console({
     stdout: fs.createWriteStream("./_logs/normalStdout.txt"),
     stderr: fs.createWriteStream("./_logs/errStdErr.txt"),
 });
 
+/*
 const eurodracmaQuotes = async() => {
     const {data} = await axios.get(eurodracmaUrl);
     const $ = cheerio.load(data);
@@ -47,5 +48,6 @@ const eurodracmaQuotes = async() => {
     });
     eurodracmaUSD = {}
 }
+ */
 
-module.exports = {eurodracmaQuotes};
+//module.exports = {eurodracmaQuotes};

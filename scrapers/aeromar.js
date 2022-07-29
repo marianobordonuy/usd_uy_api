@@ -2,7 +2,7 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const fs = require('fs');
 const path = require('path');
-const rateSchema = require("../models/rate");
+//const rateSchema = require("../models/rate");
 const {Console} = require("console");
 
 let aeromarUSD = {};
@@ -36,7 +36,6 @@ const aeromarQuotes = async() => {
                 timestamp
             })
         });
-        console.log(aeromarUSD);
         $('.mod-cotizacion').each(function () {
             const source = "Aeromar";
             const url = aeromarUrl;
@@ -115,6 +114,7 @@ const aeromarQuotes = async() => {
             myLogger.log(Date() + " JSON file successfully created for aeromarEUR");
         }
     });
+    /*
     //Save data into MongoDB
     let aeromarDocUSD = new rateSchema(aeromarUSD);
     aeromarDocUSD.save(function(err) {
@@ -136,6 +136,7 @@ const aeromarQuotes = async() => {
         if (err) return myLogger.log(Date() + " " + err);
         myLogger.log(Date() + " Document aeromarDocEUR inserted successfully!");
     });
+    */
     aeromarUSD = {};
     aeromarARS = {};
     aeromarBRL = {};

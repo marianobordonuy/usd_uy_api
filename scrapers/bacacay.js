@@ -2,7 +2,7 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const fs = require('fs');
 const path = require('path');
-const rateSchema = require("../models/rate");
+//const rateSchema = require("../models/rate");
 const {Console} = require("console");
 
 let bacacayUSD = {};
@@ -36,7 +36,7 @@ const bacacayQuotes = async() => {
                 sell,
                 timestamp
             })
-        }),
+        });
         $('tr:nth-child(4):contains("Peso Argentino")').each(function () {
             const source = "Bacacay";
             const url = bacacayUrl;
@@ -54,7 +54,7 @@ const bacacayQuotes = async() => {
                 sell,
                 timestamp
             })
-        }),
+        });
         $('tr:nth-child(5):contains("Real")').each(function () {
             const source = "Bacacay";
             const url = bacacayUrl;
@@ -70,7 +70,7 @@ const bacacayQuotes = async() => {
                 sell,
                 timestamp
             })
-        }),
+        });
         $('tr:nth-child(3):contains("Euro")').each(function () {
             const source = "Bacacay";
             const url = bacacayUrl;
@@ -117,6 +117,7 @@ const bacacayQuotes = async() => {
             myLogger.log(Date() + " JSON file successfully created for bacacayEUR");
         }
     });
+    /*
     //Save data into MongoDB
     let bacacayDocUSD = new rateSchema(bacacayUSD);
     bacacayDocUSD.save(function(err) {
@@ -138,6 +139,7 @@ const bacacayQuotes = async() => {
         if (err) return myLogger.log(Date() + " " + err);
         myLogger.log(Date() + " Document bacacayDocEUR inserted successfully!");
     });
+    */
     bacacayUSD = {};
     bacacayARS = {};
     bacacayBRL = {};

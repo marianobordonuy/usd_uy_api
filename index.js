@@ -3,32 +3,32 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const cron = require('node-cron');
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
 const { Console } = require('console');
 const Aeromar = require('./scrapers/aeromar');
 const Aspen = require ('./scrapers/aspen');
-const Avenida = require('./scrapers/avenida');
+//const Avenida = require('./scrapers/avenida');
 const Bacacay = require('./scrapers/bacacay');
-const Baluma = require('./scrapers/baluma');
-const BCU = require('./scrapers/bcu')
-const Brimar =require('./scrapers/brimar');
+//const Baluma = require('./scrapers/baluma');
+//const BCU = require('./scrapers/bcu')
+//const Brimar =require('./scrapers/brimar');
 const Cambilex = require('./scrapers/cambilex');
 const Delta = require('./scrapers/delta');
 const Dieciocho =require('./scrapers/dieciocho');
-const Eurodracma = require('./scrapers/eurodracma');
+//const Eurodracma = require('./scrapers/eurodracma');
 const Gales = require('./scrapers/gales');
 const Iberia = require('./scrapers/iberia');
-const Indumex = require('./scrapers/indumex');
+//const Indumex = require('./scrapers/indumex');
 const Maiorano = require ('./scrapers/maiorano');
 const Minas = require('./scrapers/minas');
-const Sir = require('./scrapers/sir');
+//const Sir = require('./scrapers/sir');
 const Val = require('./scrapers/val');
 const Varlix = require ('./scrapers/varlix');
 const Velso = require('./scrapers/velso');
 const rateSchema = require("./models/rate");
 require('dotenv').config();
 
-const uri = process.env.MONGODB_URI;
+//const uri = process.env.MONGODB_URI;
 
 const index = express()
 
@@ -40,19 +40,22 @@ const myLogger = new Console({
     stderr: fs.createWriteStream("./_logs/errStdErr.txt"),
 });
 
+/*
 try {
     mongoose.connect(
-        uri,
-        //"mongodb+srv://" + process.env.DB_USERNAME + ":" + process.env.SECRET_KEY + "@" + process.env.DB_NAME + ".wbidg.mongodb.net/" + process.env.DB_COLLECTION +"?retryWrites=true&w=majority",
+        //uri,
+        "mongodb+srv://" + process.env.DB_USERNAME + ":" + process.env.SECRET_KEY + "@" + process.env.DB_NAME + ".wbidg.mongodb.net/" + process.env.DB_COLLECTION +"?retryWrites=true&w=majority",
         {
             useNewUrlParser: true,
-            useUnifiedTopology: true
+            useUnifiedTopology: true,
+            useCreateIndex: true
         },
         () => myLogger.log(Date() + " Mongoose is connected")
     );
 } catch (err) {
     myLogger.error(Date() + " Could not connect " + err)
 }
+*/
 
 index.get('/', (req, res) => {
     res.json('UYU.EXCHANGE API to get the current rates for the UYU (Peso) against other main currencies offered in Punta del Este - Uruguay in USD, ARS, BRL and EUR.' +
@@ -63,14 +66,16 @@ index.get('/', (req, res) => {
 
 //GET request to obtain rate for a given exchange and currency
 index.get('/api/:sourceId/:currencyId', async (req, res) => {
-    const source = req.params.sourceId;
-    const currency = req.params.currencyId;
+    let source = "";
+    let currency = "";
+    req.params.sourceId = source.toLowerCase();
+    req.params.currencyId = currency.toUpperCase();
     //Path to file
     const filePath = path.join(__dirname,'./_data/_' + source + '/', source + currency + '.json');
     //Read file and displays the response
     fs.readFile(filePath, {encoding: 'utf-8'}, function(err,data){
         if (!err) {
-            res.data;
+            //res.data;
             res.writeHead(200, {'Content-Type': 'json'});
             res.write(data);
             res.end();
@@ -81,14 +86,13 @@ index.get('/api/:sourceId/:currencyId', async (req, res) => {
 })
 
 //GET request to obtain logs details
-index.get('/logs/:logtype', async (req, res) => {
-    const logType = req.params.logtype;
-    //Path to file
-    const filePath = path.join(__dirname,'./_logs/' + logType + '.txt');
+
+index.get('/logs/:logId', async (req, res) => {
+    let log = req.params.logId;
+    const filePath = path.join(__dirname,'./_logs/' + log + '.txt');
     //Read file and displays
     fs.readFile(filePath, {encoding: 'utf-8'}, function(err,data){
         if (!err) {
-            res.data;
             res.writeHead(200, {'Content-Type': 'text/plain'});
             res.write(data);
             res.end();
@@ -112,6 +116,7 @@ index.post('/save/:sourceId/:currencyId', async (req, res) => {
             myLogger.error(Date() + " " + err);
         }
     });
+    /*
     //Save data in MongoDB
     let newDocRate = new rateSchema(newRate);
     await newDocRate.save(function(err) {
@@ -121,19 +126,20 @@ index.post('/save/:sourceId/:currencyId', async (req, res) => {
             myLogger.error(Date() + " " + err);
         }
     });
+    */
 })
 
 
-cron.schedule('1,16,31,46 10-18 * * 1-5', () => {
-    Aeromar.aeromarQuotes();
+cron.schedule('1,16,31,46 10-20 * * *', () => {
+    void Aeromar.aeromarQuotes();
 }, {
     scheduled: true,
     timezone: "America/Montevideo"
 });
 
 //Cron job to refresh the rates every 15 minutes
-cron.schedule('30 1,16,31,46 10-18 * * 1-5', () => {
-    Aspen.aspenQuotes();
+cron.schedule('30 1,16,31,46 10-20 * * *', () => {
+    void Aspen.aspenQuotes();
 }, {
     scheduled: true,
     timezone: "America/Montevideo"
@@ -142,7 +148,7 @@ cron.schedule('30 1,16,31,46 10-18 * * 1-5', () => {
 /*
 //Cron job to refresh the rates every 15 minutes
 cron.schedule('* * * * *', () => {
-    Avenida.avenidaQuotes();
+    void Avenida.avenidaQuotes();
 }, {
     scheduled: true,
     timezone: "America/Montevideo"
@@ -150,8 +156,8 @@ cron.schedule('* * * * *', () => {
 */
 
 //Cron job to refresh the rates every 15 minutes
-cron.schedule('2,17,32,47 10-18 * * 1-5', () => {
-    Bacacay.bacacayQuotes();
+cron.schedule('2,17,32,47 10-20 * * *', () => {
+    void Bacacay.bacacayQuotes();
 }, {
     scheduled: true,
     timezone: "America/Montevideo"
@@ -160,17 +166,7 @@ cron.schedule('2,17,32,47 10-18 * * 1-5', () => {
 /*
 //Cron job to refresh the rates every 15 minutes
 cron.schedule('* * * * *', () => {
-    Baluma.balumaQuotes();
-}, {
-    scheduled: true,
-    timezone: "America/Montevideo"
-});
-*/
-
-/*
-//Cron job to refresh the rates every 15 minutes
-cron.schedule('* * * * *', () => {
-    Baluma.balumaQuotes();
+    void Baluma.balumaQuotes();
 }, {
     scheduled: true,
     timezone: "America/Montevideo"
@@ -180,7 +176,17 @@ cron.schedule('* * * * *', () => {
 /*
 //Cron job to refresh the rates every 15 minutes
 cron.schedule('* * * * *', () => {
-    Brimar.brimarQuotes();
+    void Bcu.bcuQuotes();
+}, {
+    scheduled: true,
+    timezone: "America/Montevideo"
+});
+*/
+
+/*
+//Cron job to refresh the rates every 15 minutes
+cron.schedule('* * * * *', () => {
+    void Brimar.brimarQuotes();
 }, {
     scheduled: true,
     timezone: "America/Montevideo"
@@ -188,24 +194,24 @@ cron.schedule('* * * * *', () => {
 */
 
 //Cron job to refresh the rates every 15 minutes
-cron.schedule('30 2,17,32,47 10-18 * * 1-5', () => {
-    Cambilex.cambilexQuotes();
+cron.schedule('30 2,17,32,47 10-20 * * *', () => {
+    void Cambilex.cambilexQuotes();
 }, {
     scheduled: true,
     timezone: "America/Montevideo"
 });
 
 //Cron job to refresh the rates every 15 minutes
-cron.schedule('3,18,33,48 10-18 * * 1-5', () => {
-    Delta.deltaQuotes();
+cron.schedule('3,18,33,48 10-20 * * *', () => {
+    void Delta.deltaQuotes();
 }, {
     scheduled: true,
     timezone: "America/Montevideo"
 });
 
 //Cron job to refresh the rates every 15 minutes
-cron.schedule('30 3,18,33,48 10-18 * * 1-5', () => {
-    Dieciocho.dieciochoQuotes();
+cron.schedule('30 3,18,33,48 10-20 * * *', () => {
+    void Dieciocho.dieciochoQuotes();
 }, {
     scheduled: true,
     timezone: "America/Montevideo"
@@ -214,7 +220,7 @@ cron.schedule('30 3,18,33,48 10-18 * * 1-5', () => {
 /*
 //Cron job to refresh the rates every 15 minutes
 cron.schedule('* * * * *', () => {
-    Eurodracma.eurodracmaQuotes();
+    void Eurodracma.eurodracmaQuotes();
 }, {
     scheduled: true,
     timezone: "America/Montevideo"
@@ -222,16 +228,16 @@ cron.schedule('* * * * *', () => {
 */
 
 //Cron job to refresh the rates every 15 minutes
-cron.schedule('4,19,34,49 10-18 * * 1-5', () => {
-    Gales.galesQuotes();
+cron.schedule('4,19,34,49 10-20 * * *', () => {
+    void Gales.galesQuotes();
 }, {
     scheduled: true,
     timezone: "America/Montevideo"
 });
 
 //Cron job to refresh the rates every 15 minutes
-cron.schedule('30 4,19,34,49 10-18 * * 1-5', () => {
-    Iberia.iberiaQuotes();
+cron.schedule('30 4,19,34,49 10-20 * * *', () => {
+    void Iberia.iberiaQuotes();
 }, {
     scheduled: true,
     timezone: "America/Montevideo"
@@ -240,7 +246,7 @@ cron.schedule('30 4,19,34,49 10-18 * * 1-5', () => {
 /*
 //Cron job to refresh the rates every 15 minutes
 cron.schedule('* * * * *', () => {
-    Indumex.indumexQuotes();
+    void Indumex.indumexQuotes();
 }, {
     scheduled: true,
     timezone: "America/Montevideo"
@@ -248,8 +254,8 @@ cron.schedule('* * * * *', () => {
 */
 
 //Cron job to refresh the rates every 15 minutes
-cron.schedule('5,20,35,50 10-18 * * 1-5', () => {
-    Maiorano.maioranoQuotes();
+cron.schedule('5,20,35,50 10-20 * * *', () => {
+    void Maiorano.maioranoQuotes();
 }, {
     scheduled: true,
     timezone: "America/Montevideo"
@@ -257,8 +263,8 @@ cron.schedule('5,20,35,50 10-18 * * 1-5', () => {
 
 
 //Cron job to refresh the rates every 15 minutes
-cron.schedule('30 5,20,35,50 10-18 * * 1-5', () => {
-    Minas.minasQuotes();
+cron.schedule('30 5,20,35,50 10-20 * * *', () => {
+    void Minas.minasQuotes();
 }, {
     scheduled: true,
     timezone: "America/Montevideo"
@@ -267,7 +273,7 @@ cron.schedule('30 5,20,35,50 10-18 * * 1-5', () => {
 /*
 //Cron job to refresh the rates every 15 minutes
 cron.schedule('* * * * *', () => {
-    Sir.sirQuotes();
+    void Sir.sirQuotes();
 }, {
     scheduled: true,
     timezone: "America/Montevideo"
@@ -275,24 +281,24 @@ cron.schedule('* * * * *', () => {
 */
 
 //Cron job to refresh the rates every 15 minutes
-cron.schedule('6,21,36,51 10-18 * * 1-5', () => {
-    Val.valQuotes();
+cron.schedule('6,21,36,51 10-20 * * *', () => {
+    void Val.valQuotes();
 }, {
     scheduled: true,
     timezone: "America/Montevideo"
 });
 
 //Cron job to refresh the rates every 15 minutes
-cron.schedule('30 6,21,36,51 10-18 * * 1-5', () => {
-    Varlix.varlixQuotes();
+cron.schedule('30 6,21,36,51 10-20 * * *', () => {
+    void Varlix.varlixQuotes();
 }, {
     scheduled: true,
     timezone: "America/Montevideo"
 });
 
 //Cron job to refresh the rates every 15 minutes
-cron.schedule('7,22,37,52 10-18 * * 1-5', () => {
-    Velso.velsoQuotes();
+cron.schedule('7,22,37,52 10-20 * * *', () => {
+    void Velso.velsoQuotes();
 }, {
     scheduled: true,
     timezone: "America/Montevideo"

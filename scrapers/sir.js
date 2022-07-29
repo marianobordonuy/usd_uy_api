@@ -1,21 +1,22 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
+//const axios = require('axios');
+//const cheerio = require('cheerio');
 const fs = require('fs');
-const path = require('path');
-const rateSchema = require("../models/rate");
+//const path = require('path');
+//const rateSchema = require("../models/rate");
 const {Console} = require("console");
 
-let sirUSD = {};
-let sirARS = {};
-let sirBRL = {};
-let sirEUR = {};
-const sirUrl = 'https://www.cambiosir.com.uy/';
+//let sirUSD = {};
+//let sirARS = {};
+//let sirBRL = {};
+//let sirEUR = {};
+//const sirUrl = 'https://www.cambiosir.com.uy/';
 
 const myLogger = new Console({
     stdout: fs.createWriteStream("./_logs/normalStdout.txt"),
     stderr: fs.createWriteStream("./_logs/errStdErr.txt"),
 });
 
+/*
 const sirQuotes = async() => {
     const {data} = await axios.get(sirUrl);
     const $ = cheerio.load(data);
@@ -36,7 +37,6 @@ const sirQuotes = async() => {
                 timestamp
             })
         });
-        /*
         $('.mod-cotizacion').each(function () {
             const source = "Val";
             const url = valUrl;
@@ -85,8 +85,6 @@ const sirQuotes = async() => {
                 timestamp
             })
         });
-
-         */
     })
     //Save data into fs
     fs.writeFile(path.join(__dirname, '../_data/_sir/', 'sirUSD.json'), JSON.stringify(sirUSD, null, 2), err => {
@@ -96,7 +94,6 @@ const sirQuotes = async() => {
             myLogger.log(Date() + " JSON file successfully created for sirUSD");
         }
     });
-    /*
     fs.writeFile(path.join(__dirname, '../_data/_val/', 'valARS.json'), JSON.stringify(valARS, null, 2), err => {
         if (err) {
             myLogger.log(Date() + " " + err);
@@ -118,15 +115,12 @@ const sirQuotes = async() => {
             myLogger.log(Date() + " JSON file successfully created for valEUR");
         }
     });
-
-     */
     //Save data into MongoDB
     let sirDocUSD = new rateSchema(sirUSD);
     sirDocUSD.save(function(err) {
         if (err) return myLogger.log(Date() + " " + err);
         myLogger.log(Date() + " Document sirDocUSD inserted successfully!");
     });
-    /*
     let valDocARS = new rateSchema(valARS);
     valDocARS.save(function(err) {
         if (err) return myLogger.log(Date() + " " + err);
@@ -142,12 +136,11 @@ const sirQuotes = async() => {
         if (err) return myLogger.log(Date() + " " + err);
         myLogger.log(Date() + " Document valDocEUR inserted successfully!");
     });
-
-     */
     sirUSD = {};
     //sirARS = {};
     //sirBRL = {};
     //sirEUR = {};
 }
+*/
 
-module.exports = {sirQuotes};
+//module.exports = {sirQuotes};

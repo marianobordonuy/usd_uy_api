@@ -1,21 +1,22 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
+//const axios = require('axios');
+//const cheerio = require('cheerio');
 const fs = require('fs');
-const path = require('path');
-const rateSchema = require("../models/rate");
+//const path = require('path');
+//const rateSchema = require("../models/rate");
 const {Console} = require("console");
 
-let indumexUSD = {};
-let indumexARS = {};
-let indumexBRL = {};
-let indumexEUR = {};
-const indumexUrl = 'https://www.indumex.com/';
+//let indumexUSD = {};
+//let indumexARS = {};
+//let indumexBRL = {};
+//let indumexEUR = {};
+//const indumexUrl = 'https://www.indumex.com/';
 
 const myLogger = new Console({
     stdout: fs.createWriteStream("./_logs/normalStdout.txt"),
     stderr: fs.createWriteStream("./_logs/errStdErr.txt"),
 });
 
+/*
 const indumexQuotes = async() => {
     const {data} = await axios.get(indumexUrl);
     const $ = cheerio.load(data);
@@ -112,5 +113,6 @@ const indumexQuotes = async() => {
     indumexBRL = {};
     indumexEUR = {};
 }
+*/
 
-module.exports = {indumexQuotes};
+//module.exports = {indumexQuotes};

@@ -1,21 +1,22 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
+//const axios = require('axios');
+//const cheerio = require('cheerio');
 const fs = require('fs');
-const path = require('path');
-const rateSchema = require("../models/rate");
+//const path = require('path');
+//const rateSchema = require("../models/rate");
 const {Console} = require("console");
 
-let balumaUSD = {};
+//let balumaUSD = {};
 //let avenidaARS = {};
 //let avenidaBRL = {};
 //let avenidaEUR = {};
-const balumaUrl = 'http://balumacambio.enjoypuntadeleste.com.uy/cotizacion.php';
+//const balumaUrl = 'http://balumacambio.enjoypuntadeleste.com.uy/cotizacion.php';
 
 const myLogger = new Console({
     stdout: fs.createWriteStream("./_logs/normalStdout.txt"),
     stderr: fs.createWriteStream("./_logs/errStdErr.txt"),
 });
 
+/*
 const balumaQuotes = async() => {
     const {data} = await axios.get(balumaUrl);
     const $ = cheerio.load(data);
@@ -48,15 +49,14 @@ const balumaQuotes = async() => {
             myLogger.log(Date() + " JSON file successfully created for balumaUSD");
         }
     });
-    /*
     //Save data into MongoDB
     let balumaDocUSD = new rateSchema(balumaUSD);
     balumaDocUSD.save(function(err) {
         if (err) return myLogger.log(Date() + " " + err);
         myLogger.log(Date() + " Document balumaDocUSD inserted successfully!");
     });
-     */
     balumaUSD = {};
 }
+*/
 
-module.exports = {balumaQuotes};
+//module.exports = {balumaQuotes};

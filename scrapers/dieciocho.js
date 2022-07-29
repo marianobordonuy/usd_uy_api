@@ -2,7 +2,7 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const fs = require('fs');
 const path = require('path');
-const rateSchema = require("../models/rate");
+//const rateSchema = require("../models/rate");
 const {Console} = require("console");
 
 let dieciochoUSD = {};
@@ -115,6 +115,7 @@ const dieciochoQuotes = async() => {
             myLogger.log(Date() + " JSON file successfully created for dieciochoEUR");
         }
     });
+    /*
     //Save data into MongoDB
     let dieciochoDocUSD = new rateSchema(dieciochoUSD);
     dieciochoDocUSD.save(function(err) {
@@ -136,6 +137,7 @@ const dieciochoQuotes = async() => {
         if (err) return myLogger.log(Date() + " " + err);
         myLogger.log(Date() + " Document dieciochoDocEUR inserted successfully!");
     });
+    */
     dieciochoUSD = {};
     dieciochoARS = {};
     dieciochoBRL = {};
