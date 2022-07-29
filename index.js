@@ -66,16 +66,12 @@ index.get('/', (req, res) => {
 
 //GET request to obtain rate for a given exchange and currency
 index.get('/api/:sourceId/:currencyId', async (req, res) => {
-    let source = "";
-    let currency = "";
-    req.params.sourceId = source.toLowerCase();
-    req.params.currencyId = currency.toUpperCase();
-    //Path to file
+    let source = req.params.sourceId;
+    let currency = req.params.currencyId;
     const filePath = path.join(__dirname,'./_data/_' + source + '/', source + currency + '.json');
     //Read file and displays the response
     fs.readFile(filePath, {encoding: 'utf-8'}, function(err,data){
         if (!err) {
-            //res.data;
             res.writeHead(200, {'Content-Type': 'json'});
             res.write(data);
             res.end();
@@ -86,7 +82,6 @@ index.get('/api/:sourceId/:currencyId', async (req, res) => {
 })
 
 //GET request to obtain logs details
-
 index.get('/logs/:logId', async (req, res) => {
     let log = req.params.logId;
     const filePath = path.join(__dirname,'./_logs/' + log + '.txt');
